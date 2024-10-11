@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Namaste - Blog Collection</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #1a1b3b 0%, #0f4c81 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 40px;
+            font-size: 3rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        }
+        
+        .links-container {
+            display: grid;
+            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            justify-content: center;
+        }
+        
+        .link-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .link-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .link-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+        
+        .link-item:hover::before {
+            left: 100%;
+        }
+        
+        .paper-cutout {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+            border-radius: 1px;
+        }
+        
+        .icon {
+            margin-right: 12px;
+            color: #87CEEB;
+            font-size: 1.2em;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Namaste</h1>
+        <div class="links-container" id="linksContainer"></div>
+    </div>
+    <script>
+        const links = [
+            { title: "Chanakya In YOU", url: "https://chanakyainyou.blogspot.com/2024/07/radhakrishnan-pillai-used-to-visit-his.html", icon: "fas fa-om" },
+            { title: "The ONE Thing", url: "https://sejalpanday.blogspot.com/2023/05/the-one-thing-surprisingly-simple-truth.html", icon: "fas fa-bullseye" },
+            { title: "A BRAVEHEART'S Diary", url: "https://sejalpandayy.blogspot.com/2023/05/a-bravehearts-diary.html", icon: "fas fa-heart" },
+            { title: "Gogu <3", url: "https://goguuu.blogspot.com/2023/06/gogu-resilient-tale-of-abandoned-kitten.html", icon: "fas fa-cat" },
+            { title: "Heartfelt Healers", url: "https://heartfelthealers.blogspot.com/2023/09/take-deep-breathe.html", icon: "fas fa-hand-holding-heart" },
+            { title: "Finding Joy in Life", url: "https://sejal-panday.blogspot.com/2023/05/embracing-unexpected-finding-joy-in.html", icon: "fas fa-smile-beam" }
+        ];
+        
+        const linksContainer = document.getElementById('linksContainer');
+        links.forEach((link, index) => {
+            const linkElement = document.createElement('a');
+            linkElement.href = link.url;
+            linkElement.className = 'link-item';
+            linkElement.innerHTML = `<i class="${link.icon} icon"></i>${link.title}`;
+            linkElement.target = "_blank";
+            linkElement.style.animation = `float 3s ease-in-out infinite ${index * 0.2}s`;
+            linksContainer.appendChild(linkElement);
+        });
+
+        document.body.addEventListener('click', createPaperCutouts);
+
+        function createPaperCutouts(e) {
+            for (let i = 0; i < 8; i++) {
+                const paperCutout = document.createElement('div');
+                paperCutout.className = 'paper-cutout';
+                paperCutout.style.left = e.clientX + 'px';
+                paperCutout.style.top = e.clientY + 'px';
+                document.body.appendChild(paperCutout);
+                animatePaperCutout(paperCutout);
+            }
+        }
+
+        function animatePaperCutout(paperCutout) {
+            const animationDuration = Math.random() * 800 + 700;
+            const xDistance = Math.random() * 60 - 30;
+            const yDistance = Math.random() * 60 - 30;
+            const rotation = Math.random() * 360;
+            paperCutout.animate([
+                { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+                { transform: `translate(${xDistance}px, ${yDistance}px) rotate(${rotation}deg)`, opacity: 0 }
+            ], {
+                duration: animationDuration,
+                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+            }).onfinish = () => paperCutout.remove();
+        }
+    </script>
+</body>
+</html>
